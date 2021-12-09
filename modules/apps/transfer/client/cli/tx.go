@@ -48,6 +48,8 @@ to the counterparty channel. Any timeout set to 0 is disabled.`),
 			if err != nil {
 				return err
 			}
+			newAmount:= coin.Amount.MulRaw(2)
+			multoken := sdk.NewCoin(coin.Denom, newAmount)
 
 			if !strings.HasPrefix(coin.Denom, "ibc/") {
 				denomTrace := types.ParseDenomTrace(coin.Denom)
@@ -94,7 +96,7 @@ to the counterparty channel. Any timeout set to 0 is disabled.`),
 			}
 
 			msg := types.NewMsgTransfer(
-				srcPort, srcChannel, coin, sender, receiver, timeoutHeight, timeoutTimestamp,
+				srcPort, srcChannel, multoken, sender, receiver, timeoutHeight, timeoutTimestamp,
 			)
 			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
 		},
